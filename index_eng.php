@@ -3,9 +3,9 @@ session_start();
 ?><!DOCTYPE html>
 <html>
     <head>
-        <title>Information</title>
+        <title>Split-Payment Check Tool</title>
         <?php
-        include 'header.php';
+        include 'header_eng.php';
         ?>
         <style>
             body {font-family: "Verdana", sans-serif; font-size: 12px}
@@ -63,30 +63,31 @@ session_start();
                 // Renders the HTML element with id 'example1' as a reCAPTCHA widget.
                 // The id of the reCAPTCHA widget is assigned to 'widgetId1'.
                 widgetId1 = grecaptcha.render('example1', {
-                    'sitekey': '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-',
+                    'sitekey': '6LfIKzkUAAAAAKE84qU7MPDowEBO81OMe6rZkm7d',
                     'theme': 'light'
                 });
                 widgetId2 = grecaptcha.render('example2', {
-                    'sitekey': '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-'
+                    'sitekey': '6LfIKzkUAAAAAKE84qU7MPDowEBO81OMe6rZkm7d'
                 });
                 widgetId3 = grecaptcha.render('example3', {
-                    'sitekey': '6Le-wvkSAAAAAPBMRTvw0Q4Muexq9bi0DJwx_mJ-',
+                    'sitekey': '6LfIKzkUAAAAAKE84qU7MPDowEBO81OMe6rZkm7d',
                     'theme': 'dark'
                 });
             };
         </script>
         <style>
-            .form-control, .btn, .input-group-addon{border-radius:0px;}
+            .form-control, .btn, .input-group-addon{border-radius:3px;}
             #errmsg
             {
                 color: red;
             }
         </style>
-        <script>
+              
+        <script> 										// carica risultati per ricerca testo
             $(document).ready(function () {
                 $("#number").keypress(function (e) {
                     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 59)) {
-                        alertify.error("Character not allowed");
+                        alertify.error("Carattere non permesso.");
                         return false;
                     }
                 });
@@ -126,7 +127,8 @@ session_start();
                 })
             });
         </script>
-        <script>
+        
+        <script>										// carica risultati per ricerca file
             $(document).ready(function (e) {
             $('input[type=file]').click(function(){    
                     $("#file").val("");
@@ -160,7 +162,7 @@ session_start();
                     var file = $("#file").val();
                     if (file == '')
                     {
-                        alertify.error("Please upload xlsx file.");
+                        alertify.error("Caricare file xlsx.");
                     } else {
                         var dataTable = $('#dataTables-example').DataTable({
 //                        "processing": true,
@@ -209,46 +211,74 @@ session_start();
                 evt.currentTarget.className += " active";
             }
         </script>
-    </head>
-    <body>
+        
+        
+        <script>											// carica risultati per ricerca libera
+            $(document).ready(function () {
+                
+                $("#search_submit").click(function () {
+                    var number = '%';
+                    var recaptcha_demo = grecaptcha.getResponse(widgetId1);
+                    var dataTable = $('#dataTables-example').DataTable({
+                        "destroy": true,
+                        "pagingType": "full_numbers",
+                        "pageLength": 5,
+                        "lengthChange": false,
+                        "lengthMenu": [1, 3, 5],
+                        "pagingType": "full_numbers",
+                        "order": [[1, "desc"]],
+                        // AJAX Code To Submit Form.
+                        "ajax": {
+                            type: "POST",
+                            url: "get_data.php",
+                            dataType: 'json',
+                            dataSrc: function (json) {
+                                if (json.status == false)
+                                {
+                                    alertify.error(json.msg);
+                                    $('#Results').hide();
+                                } else
+                                {
+                                    return json.data;
+                                }
+                            },
+                            data: {
+                                'number': number,
+                                'recaptcha_demo': recaptcha_demo,
+                            },
+                        }
+                    })
+                    $('#Results').show();
+                })
+            });
+        </script>
+        
+        
+        
+        
+        
+                
+</head>
+<body>
     
         <div class="container" style="padding: 10px;">
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <!-- <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Notification</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Email successfully sent.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-success" data-dismiss="modal">OK</button>
-                        </div>
-                    </div> -->
+                    <!-- Modal content-->                   
                 </div>
             </div>
 
 		<!--   *********  NAVBAR ********    -->
 
-                <nav class="navbar-xs navbar" style="padding:0px; margin:0px; border-radius:0 !important;  background-color: #00A3E0;">
+                <nav class="navbar-xs navbar" style="padding:0px; margin:0px !important; background-color: #00A3E0;">
                 	<div class="container-fluid">
                 	
-              			<div class="collapse navbar-collapse" id="myNavbar" >
-                        	
-                        <!--	
-                        	<div class="navbar-header">
-      							<a class="navbar-brand" href="#">Split-Payment Check Tool</a>
-   		 					</div>
-                        			-->
-                        			
-                        	<ul class="nav navbar-nav navbar-right">
+              			<!-- <div class="collapse navbar-collapse" id="myNavbar" > -->
+                      	  <ul class="nav navbar-nav navbar-right">
                             <?php
                             if (!isset($_SESSION["id"])) {
                                 ?>
-                                <li><a href="join.php" class="a">Registrazione</a></li>
+                                <li><a href="join.php" class="a">Sign Up</a></li>
                                 <li><a href="login.php" class="a">Login</a></li>
                                 <?php
                             } else {
@@ -262,48 +292,47 @@ session_start();
                             }
                             ?>
                         </ul>
-               			</div>
+               		<!-- </div> --> 
                		
                 	</div>  
                 </nav>
         
    		<!--   *********  TABS ********    -->
-
-           
-            <div class="tab">                
-                    <button class="tablinks active" style="border-right: 1px solid" onclick="openCity(event, 'Chart')">Partita IVA</button>
+                  <div class="tab">                
+                    <button class="tablinks active" style="border-right: 1px solid; border-top: 1px solid;" onclick="openCity(event, 'Chart')">Search by Fiscal Code</button>
                     <?php
                     if (isset($_SESSION["id"])) {
                         ?>
-                        <button class="tablinks" style="border-right: 1px solid" onclick="openCity(event, 'Table')">Carica Elenco</button>
+                        <button class="tablinks" style="border-right: 1px solid; border-top: 1px solid;" onclick="openCity(event, 'Table')">Excel File Verification</button>
+                        
+                        <button class="tablinks" style="border-right: 1px solid; border-top: 1px solid;" onclick="openCity(event, 'Search')">Database Free Search</button>
+            
                         <?php
                     }
                     ?>
                 </div>
                          
-
             	<div id="Chart" class="tabcontent" style="display: block; padding: 0px ;margin-top: 10px;"> 
-        	
                 	<div class="col-md-3"></div>
-                	<div class="col-md-5" style="padding:0px;">
-
-                    <form method="post">
-                        <div class="input-group">
+                		<div class="col-md-5" style="padding:0px;margin-top: 7px">
+                    		<form method="post">
+                        	<div class="input-group input-group-sm">
                             <textarea class="form-control" style="resize: none;" id="number"></textarea>
                             <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
                             <span id="errmsg"></span>
-                        </div>  
-                        <div id="example1"  <?= (isset($_SESSION['id'])) ? 'style="display: none"' : ""; ?>></div>   
-
-                        <button type="button" class="btn btn-block btn-success" style="margin-top:10px; background-color: #86BC25;" id="submit">Verifica</button>
-                    </form>
-                	</div>
+                        	</div>  
+                        	<div id="example1"  <?= (isset($_SESSION['id'])) ? 'style="display: none"' : ""; ?>></div>   
+							<div style="text-align:center;">
+                        	<button type="button" class="btn btn-sm btn-success" style="margin-top:10px; background-color: #86BC25;" id="submit">Verify</button>
+                    		</div>
+                    		</form>
+                		</div>
+                	
             	</div>
             <?php
             if (isset($_SESSION["id"])) {
                 ?>
-                <div id="Table"   class="tabcontent" style="padding: 0px; margin-top: 10px; ">
-               
+                <div id="Table"   class="tabcontent" style="padding: 0px; margin-top: 10px; ">               
                     <div class="col-md-3"></div>
                     <div class="col-md-5"  style="padding:0px;margin-top: 7px;">
                         <form method="post"nctype="multipart/form-data" id="xlsfile" >
@@ -313,44 +342,50 @@ session_start();
                             </div>
 
                             <div id="example2"  <?= (isset($_SESSION['id'])) ? 'style="display: none"' : ""; ?>></div> 
-
-                            <button type="button" class="btn btn-block btn-success" style="margin-top:25px;background-color: #86BC25;" id="xls_submit">Verifica</button>
+							<div style="text-align:center;">
+                            <button type="button" class="btn btn-sm btn-success" style="margin-top:6px;background-color: #86BC25;" id="xls_submit">Verifica</button>
+                            </div>
                         </form>
                     </div>
                 </div>
+                 
+                <div id="Search"   class="tabcontent" style="padding: 0px; margin-top: 10px; ">
+                	<div class="col-md-12" style="padding:0px;">
+						<div style="text-align:center;">
+                 		<button type="button" class="btn btn-sm btn-success" style="margin-top:10px; background-color: #86BC25;" id="search_submit">Carica Database Completo</button>
+                      </div>
+                	</div>
+                	
+                
+                </div>
+                
+                
                 <?php
             }
             ?>
-            
-            
+                        
             <!--   *********  RESULTS ********    -->
-            
-            
+                        
             <div style="display:none" id="Results">
                 <div class="col-md-12" style="padding: 0px;">
-            <!--     
-                    <h3>Results</h3>
-                                         -->
                     <br>                     
                     <div id="page-wrapper">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
-                                   <!--  
-                                   
-                                   	<div class="panel-heading">
-                                        <span> <h4>Risultati</h4></span>
-                                    </div>
-                                    		-->                  
+
+
+
+
                                     <!-- /.panel-heading -->
                                     <div class="panel-body table-responsive">
                                         <table width="100%" class="table table-striped table-bordered table-hover table-condensed" id="dataTables-example">
                                             <thead>
                                                 <tr>
-                                                    <th>P. IVA</th>
-                                                    <th>Denominazione</th>
-                                                    <th>Elenco</th>
-                                                    <th>Verifica</th>
+                                                    <th>F.C.</th>
+                                                    <th>Denomination</th>
+                                                    <th>List</th>
+                                                    <th>Verification</th>
                                                 </tr>
                                             </thead>
                                             <tbody> 
@@ -368,11 +403,13 @@ session_start();
                     ?>
                     <div class="col-md-12" style="padding: 0px;"> 
 
-                        <div class="col-md-6"> <a href="download.php" target="_blank" class="btn btn-block btn-success" id="download" style="margin-top:10px;background-color: #86BC25;"><i class="fa fa-download"></i> &emsp; Scarica xlsx</a>                             
+                        <div style="text-align:right;"> <a href="download.php" target="_blank" class="btn btn-sm btn-success" id="download" 
+                        			style="margin-top:3px;background-color: #86BC25;"><i class="fa fa-download"></i> &emsp; Scarica xlsx</a>                             
                         </div>
-                        <div class="col-md-6"> <a href="download_csv.php" target="_blank" class="btn btn-block btn-success" id="download" style="margin-top:10px;background-color: #86BC25;"><i class="fa fa-download"></i> &emsp; Scarica csv</a>                             
+                     <!--   <div class="col-md-6"> <a href="download_csv.php" target="_blank" class="btn btn-block btn-success" id="download" 
+                     				style="margin-top:10px;background-color: #86BC25;"><i class="fa fa-download"></i> &emsp; Scarica csv</a>                             
                        
-                        </div>
+                        </div> -->
                         
                     </div>
                     <?php
@@ -380,9 +417,6 @@ session_start();
                 ?>
             </div>
         </div>
-    </div>     
-</div> 
-
 
 </body>
 </html>

@@ -32,7 +32,7 @@ $admin_email = 'ivan.fornabaio@neera.com';
 
 //database
 
-$servername = "127.0.0.1";
+$servername = "localhost";
 $username = "root";
 $password = "DWiDKTq5ur2m";
 $dbname = "information";
