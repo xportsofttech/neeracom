@@ -1,11 +1,11 @@
 <?php
     require_once '../dbconnect.php';
-    $ufname=$_POST['ufname'];
-    $ulname=$_POST['ulname'];
-    $uemail=$_POST['uemail'];
-    $ucname=$_POST['ucname'];
-    $umob=$_POST['umob'];
-    $uaddr=$_POST['uaddr'];
+    $ufname=mysqli_real_escape_string($conn,$_POST['ufname']);
+    $ulname=mysqli_real_escape_string($conn,$_POST['ulname']);
+    $uemail=mysqli_real_escape_string($conn,$_POST['uemail']);
+    $ucname=mysqli_real_escape_string($conn,$_POST['ucname']);
+    $umob=mysqli_real_escape_string($conn,$_POST['umob']);
+    $uaddr=mysqli_real_escape_string($conn,$_POST['uaddr']);
     $ute=$_POST['ute'];
     $uid=$_POST['uid'];
     $connections_available=$_POST['connections_available'];
@@ -18,4 +18,5 @@
     else{
         $ret=array('Status'=>false,'Message'=>'Something went wrong');
     }
+	
     echo json_encode($ret);

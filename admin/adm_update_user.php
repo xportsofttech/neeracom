@@ -116,6 +116,7 @@
                     data: $("#updateUser").serialize(),
                     dataType:'json',
                     success: function(data){
+						
                         if(data.Status==true){
                             alertify.alert(data.Message, function(){
                                 window.location='admin_user.php';

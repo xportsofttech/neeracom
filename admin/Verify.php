@@ -21,7 +21,11 @@
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <span>Log Attività</span>
+								<div style="text-align:right;"> <a href="downloadcsv.php" target="_blank" class="btn btn-sm btn-success" id="download" 
+                        			style="margin-top:3px;background-color: #86BC25;"><i class="fa fa-download"></i> &emsp; Scarica registro xlsx</a>                             
+                        </div>
                             </div>
+							
                             <!-- /.panel-heading -->
                             <div class="panel-body table-responsive">
                                 <table width="100%" class="table table-striped table-bordered table-hover" id="displayData">

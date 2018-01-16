@@ -92,7 +92,7 @@ include 'header.php';
 
             <div class="col-md-3"></div>
             <div class="col-md-6"  style="padding:0px;margin-top: 7px;">
-                <form method="post"nctype="multipart/form-data" id="xlsfile" >
+                <form method="post" nctype="multipart/form-data" id="xlsfile" >
                     <div class="input-group">
                         <input type="file" class="form-control"  name="file" id="file"/>
                         <span class="input-group-addon"><i class="fa fa-file"></i></span>
