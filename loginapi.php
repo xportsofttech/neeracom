@@ -52,12 +52,14 @@ else {
         $connections_available = $row['connections_available'];
         $user_email = $row['email'];
     }
+	$_SESSION['userid']=$user_id;
     //for checking maximum connection availability
-    $q = "SELECT * FROM login_report  WHERE logout_date_time IS NULL AND user_id='" . $user_id . "'";
+    $q = "SELECT * FROM login_report WHERE logout_date_time IS NULL AND user_id='" . $user_id . "'";
     $r = mysqli_query($conn, $q);
     $rows = mysqli_num_rows($r);
     if ($rows < $max_login) {
         $_SESSION['id'] = $fname . " " . $lname;
+		$_SESSION['userid']=$user_id;
         $d = getdate();
         $time = $d['hours'] . ":" . $d['minutes'] . ":" . $d['seconds'];
         $date = $d['year'] . "-" . $d['mon'] . "-" . $d['mday'];
@@ -114,7 +116,7 @@ else {
             echo 'E-Mail could not be sent. Mailer Error: ' . $mail->ErrorInfo;
         } else {
             //Insert values to activity table ,for Activities,request,response,date,ip        
-            $insert = "insert into Verify(Activities,request,response,date_created,ip) values('Login','" . $user_id . "','" . $responce['msg'] . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "')";
+            $insert = "insert into Verify(Activities,request,response,date_created,ip,UserId) values('Login','" . $user_id . "','" . $responce['msg'] . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $user_id . "')";
 
             $conn->query($insert);
         }

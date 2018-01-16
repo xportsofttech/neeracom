@@ -41,7 +41,7 @@ if (!empty($_SESSION['data']) && $_SESSION['data'] != 0 && isset($_SESSION['data
     header('Content-Disposition: attachment;filename="split-payment-check_tool_results.xlsx"');
     header('Cache-Control: max-age=0');
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-    $insert = "insert into Verify(Activities,request,response,date_created,ip) values('download xlsx','" . $_SESSION["a"] . "','" . $_SESSION["ak"] . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "')";
+    $insert = "insert into Verify(Activities,request,response,date_created,ip,UserId) values('download xlsx','" . $_SESSION["a"] . "','" . $_SESSION["ak"] . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $_SESSION['userid'] . "')";
     $conn->query($insert);
 
     $objWriter->save('php://output');

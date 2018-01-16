@@ -38,7 +38,7 @@ if (!empty($_SESSION['data']) && $_SESSION['data'] != 0 && isset($_SESSION['data
     $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'CSV');
 
     $objWriter->save('php://output');
-    $insert = "insert into Verify(Activities,request,response,date_created,ip) values('download csv','" . $_SESSION["a"] . "','" . $_SESSION["ak"] . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "')";
+    $insert = "insert into Verify(Activities,request,response,date_created,ip,UserId) values('download csv','" . $_SESSION["a"] . "','" . $_SESSION["ak"] . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $_SESSION['userid'] . "')";
     $conn->query($insert);
 }
 

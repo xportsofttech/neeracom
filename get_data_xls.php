@@ -33,15 +33,17 @@ if (isset($_SESSION['id']) == '') {
 }
 $xls = "assets/upload/" . $_SESSION['file_name'];
 
-try {
+/* try {
     PHPExcel_Settings::setZipClass(PHPExcel_Settings::PCLZIP);
     $inputFileType = PHPExcel_IOFactory::identify($xls);
 
     $objReader = PHPExcel_IOFactory::createReader($inputFileType);
     $objPHPExcel = $objReader->load($xls);
-} catch (Exception $e) {
+}
+
+ catch (Exception $e) {
     die('Error loading file "' . pathinfo($inputFileName, PATHINFO_BASENAME) . '": ' . $e->getMessage());
-};
+}; */
 
 
 //  Get worksheet dimensions
@@ -58,19 +60,26 @@ $a = null;
 for ($row = 1; $row <= $highestRow; $row++) {
 
     //  Read a row of data into an array
-    $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+     $rowData = $sheet->rangeToArray('A' . $row . ':' . $highestColumn . $row, NULL, TRUE, FALSE);
+
     reset($rowData);
     foreach ($rowData[0] as $value) {
 
         $v=strpos($value,".");
+		echo $v;
         if ($v != 0) {
-            $json_data = array(
+			
+			
+           $json_data = array(
                 "status" => FALSE,
                 "msg" => "Caratteri non permessi."  // total data array
             );
             echo json_encode($json_data);
+			
             exit;
         }
+		
+	
         if (empty($value)) {
             continue;
         }
@@ -162,7 +171,7 @@ if ($result->num_rows > 0) {
     }
     $_SESSION["a"] = $a;
     $_SESSION["ak"] = $ak;
-    $insert = "insert into Verify(Activities,request,response,date_created,ip) values('" . "file" . "','" . $a . "','" . $ak . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "')";
+    $insert = "insert into Verify(Activities,request,response,date_created,ip,UserId) values('" . "file" . "','" . $a . "','" . $ak . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $_SESSION['userid'] . "')";
     $conn->query($insert);
     $_SESSION["last_id"] = $conn->insert_id;
     $_SESSION["data"] = $datas;

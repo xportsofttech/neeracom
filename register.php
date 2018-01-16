@@ -21,6 +21,24 @@ if ($result->num_rows > 0) {
     $res = mysqli_query($conn, $q) or die("not fire");
     if ($res) {
         $_SESSION["id"] = $_POST['FName'] . " " . $_POST['LName'];
+		$sqlQry=mysqli_query($conn,"select max(id) as LatestId from user");
+		$row=mysqli_fetch_assoc($sqlQry);
+		$_SESSION['userid']=$row['LatestId'];
+        $d = getdate();
+        $time = $d['hours'] . ":" . $d['minutes'] . ":" . $d['seconds'];
+        $date = $d['year'] . "-" . $d['mon'] . "-" . $d['mday'];
+
+        $dt = $date . " " . $time;
+        $date = date_create($dt);
+        $dtime = date_format($date, "Y-m-d H:i:s");
+        
+        //insert login user detail in login_report table
+        $insert = mysqli_query($conn,"insert into login_report set login_date_time='" . $dtime . "', user_id='" . $_SESSION['userid'] . "'");
+		if($insert){
+			$sqlQrylogin=mysqli_query($conn,"select max(id) as loginid from login_report");
+			$rowlogin=mysqli_fetch_assoc($sqlQrylogin);
+			$_SESSION["login_report_id"] = $rowlogin['loginid'];
+		}
         $fullname = $_POST['FName'] . " " . $_POST['LName'];
         $Username = $GLOBALS['UserName'];
         $Password = $GLOBALS['PassWord'];

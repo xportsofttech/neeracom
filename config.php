@@ -10,16 +10,16 @@
 $user_trail_days = 30;
 
 //my web site login page url 
-$website = "http://www.split-payment.info";
+$website = "http://sportica.in/split";
 
 //sending email credientials
-$Host = 'ssl://smtps.aruba.it';
-$Port = 465;
-$UserName = 'development@neera.com';
-$PassWord = 'n33r4c0m';
+$Host = 'localhost';
+$Port = 25;
+$UserName = 'split@sportica.in';
+$PassWord = 'split!@#$%^';
 
 //admin email 
-$admin_email = 'ivan.fornabaio@neera.com';
+$admin_email = 'ngurvinder02@gmail.com';
 
 
 //corn tab url
@@ -33,6 +33,6 @@ $admin_email = 'ivan.fornabaio@neera.com';
 //database
 
 $servername = "localhost";
-$username = "root";
-$password = "DWiDKTq5ur2m";
-$dbname = "information";
+$username = "split_info";
+$password = "Qi1FB8RBi]?*";
+$dbname = "split_info";

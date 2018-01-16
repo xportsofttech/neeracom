@@ -142,7 +142,7 @@ if ($result->num_rows > 0) {
     }
     $_SESSION["a"] = $a;
     $_SESSION["ak"] = $ak;
-    $insert = "insert into Verify(Activities,request,response,date_created,ip) values('" . $number1 . "','" . $a . "','" . $ak . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "')";
+    $insert = "insert into Verify(Activities,request,response,date_created,ip,UserId) values('" . $number1 . "','" . $a . "','" . $ak . "','" . $time . "','" . $_SERVER['REMOTE_ADDR'] . "','" . $_SESSION['userid'] . "')";
 
     $conn->query($insert);
     $_SESSION["last_id"] = $conn->insert_id;

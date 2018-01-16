@@ -1,5 +1,6 @@
 <?php
 session_start();
+ $_SESSION['userid'];
 ?><!DOCTYPE html>
 <html>
     <head>
@@ -63,7 +64,7 @@ session_start();
                 // Renders the HTML element with id 'example1' as a reCAPTCHA widget.
                 // The id of the reCAPTCHA widget is assigned to 'widgetId1'.
                 widgetId1 = grecaptcha.render('example1', {
-                    'sitekey': '6LfIKzkUAAAAAKE84qU7MPDowEBO81OMe6rZkm7d',
+                    'sitekey': '6LezQUAUAAAAALK91NqGuE1WCeqUjrV7BAAp1XfU',
                     'theme': 'light'
                 });
                 widgetId2 = grecaptcha.render('example2', {
@@ -133,7 +134,7 @@ session_start();
             $('input[type=file]').click(function(){    
                     $("#file").val("");
                 })
-                $("#xlsfile").on('change', (function (e) {
+                $("#xlsfile1").on('change', (function (e) {
                     e.preventDefault();
                     $("#message").empty();
                     $('#loading').show();
@@ -156,7 +157,7 @@ session_start();
                     });
                 }));
 
-                $("#xls_submit").click(function (e) {
+                $("#xls_submit1").click(function (e) {
                     e.preventDefault();
                     var recaptcha_demo = grecaptcha.getResponse(widgetId2);
                     var file = $("#file").val();
@@ -186,10 +187,7 @@ session_start();
                                     {
                                         alertify.error(json.msg);
                                         $('#Results').hide();
-                                    } else
-                                    {
-                                        return json.data;
-                                    }
+                                    } 
                                 }
                             }
                         })
@@ -211,7 +209,21 @@ session_start();
                 evt.currentTarget.className += " active";
             }
         </script>
+		<script>
+		function add_log(message)
+        {
+            $('#myModal').modal('show');
+            if (message.text)
+            {
+                console.log(message);
+                dataTable.rows.add([message]).draw(false);
+                //  dataTable.rows().add([message]).draw(false);
+                dataTable.order([0, 'asc']).draw();
+                dataTable.page('last').draw(false);
+            }
+        }
         
+		</script>
         
         <script>											// carica risultati per ricerca libera
             $(document).ready(function () {
@@ -264,7 +276,23 @@ session_start();
         <div class="container" style="padding: 10px;">
             <div class="modal fade" id="myModal" role="dialog">
                 <div class="modal-dialog">
-                    <!-- Modal content-->                   
+                    <!-- Modal content--> 
+                   <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Notification</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="progress">
+                        <div class="progress-bar"  id="progressor" role="progressbar" aria-valuenow="20" aria-valuemin="0" data-original-title="0%" aria-valuemax="100" style="width: 0%" >     
+                        </div> 
+                    </div>
+                    <h5 id="progress_data"></h5>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-success" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>					
                 </div>
             </div>
 
@@ -335,7 +363,7 @@ session_start();
                 <div id="Table"   class="tabcontent" style="padding: 0px; margin-top: 10px; ">               
                     <div class="col-md-3"></div>
                     <div class="col-md-5"  style="padding:0px;margin-top: 7px;">
-                        <form method="post"nctype="multipart/form-data" id="xlsfile" >
+                        <form method="post"nctype="multipart/form-data" id="xlsfile1" >
                             <div class="input-group">
                                 <input type="file" class="form-control"  name="file" id="file" accept=".xlsx, .xls, .ods, .xml"/>
                                 <span class="input-group-addon"><i class="fa fa-file"></i></span>
@@ -343,7 +371,7 @@ session_start();
 
                             <div id="example2"  <?= (isset($_SESSION['id'])) ? 'style="display: none"' : ""; ?>></div> 
 							<div style="text-align:center;">
-                            <button type="button" class="btn btn-sm btn-success" style="margin-top:6px;background-color: #86BC25;" id="xls_submit">Verifica</button>
+                            <button type="button" class="btn btn-sm btn-success" style="margin-top:6px;background-color: #86BC25;" id="xls_submit1">Verifica</button>
                             </div>
                         </form>
                     </div>
@@ -397,6 +425,9 @@ session_start();
                         </div>
                     </div>
                 </div>
+				
+				
+        
                 <?php
                 @session_start();
                 if ($_SESSION["id"]) {
@@ -417,6 +448,11 @@ session_start();
                 ?>
             </div>
         </div>
+		
+		
+        <script src="../js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="../js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+		
 
 </body>
 </html>
